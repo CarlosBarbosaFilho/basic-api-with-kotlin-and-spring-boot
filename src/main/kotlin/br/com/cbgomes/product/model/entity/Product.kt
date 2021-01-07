@@ -18,7 +18,7 @@ data class Product(
         val category: String? = null,
         val code: Int? = null,
         @JsonBackReference
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
         @JoinColumn(name = "promotion_id")
         var promotion: Promotion? = null
 )

@@ -17,7 +17,7 @@ import java.time.LocalDate
 
 @Api("Endpoint to flow of promotions")
 @RestController
-@RequestMapping("/api/promotions")
+@RequestMapping(value = ["/api/v1/promotions"])
 class PromotionResource(val promotionService: PromotionService) {
 
     private val logger : Logger = LoggerFactory.getLogger(this.javaClass)

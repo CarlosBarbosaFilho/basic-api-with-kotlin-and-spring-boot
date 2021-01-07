@@ -10,7 +10,7 @@ interface ProductService {
 
     fun create(product: ProductForm): ProductDto
 
-    fun deleteProduct(id: Long)
+    fun deleteProductById(id: Long)
 
     fun getAll(): List<ProductDto>
 

@@ -1,6 +1,8 @@
 package br.com.cbgomes.product.business.serviceimpl
 
 import br.com.cbgomes.product.business.service.ProductService
+import br.com.cbgomes.product.exception.ProductExistsPromotionNotFoundException
+import br.com.cbgomes.product.exception.ProductNotFoundException
 import br.com.cbgomes.product.model.dto.ProductDto
 import br.com.cbgomes.product.model.dto.toDTO
 import br.com.cbgomes.product.model.form.ProductForm
@@ -10,12 +12,17 @@ import br.com.cbgomes.promotion.repository.PromotionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
+import java.time.LocalDate
 
 @Service
 class ProductServiceImpl(val productRepository: ProductRepository, val promotionRepository: PromotionRepository): ProductService {
 
     override fun getById(id: Long): ProductDto {
-        return this.productRepository.findById(id).get().toDTO()
+        return try {
+            this.productRepository.findById(id).get().toDTO()
+        } catch (ex: NoSuchElementException){
+            throw ProductNotFoundException(id)
+        }
     }
 
     @Transactional
@@ -24,9 +31,14 @@ class ProductServiceImpl(val productRepository: ProductRepository, val promotion
     }
 
     @Transactional
-    override fun deleteProduct(id: Long) {
-        this.productRepository.deleteById(id)
+    override fun deleteProductById(id: Long) {
+        if (this.productRepository.findById(id).get().promotion != null) {
+                throw ProductExistsPromotionNotFoundException(id)
+        }else {
+            this.productRepository.deleteById(id)
+        }
     }
+
 
     override fun getAll(): List<ProductDto> {
         return this.productRepository.findAll().map { it.toDTO() }
