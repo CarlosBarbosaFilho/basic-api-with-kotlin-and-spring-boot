@@ -12,7 +12,6 @@ import br.com.cbgomes.promotion.repository.PromotionRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
-import java.time.LocalDate
 
 @Service
 class ProductServiceImpl(val productRepository: ProductRepository, val promotionRepository: PromotionRepository): ProductService {
